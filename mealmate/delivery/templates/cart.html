@@ -33,7 +33,7 @@
                         <td>{{ item.description }}</td>
                         <td>{{ item.price }}</td>
                         <td>
-                            <a class="btn btn-secondary" href="{% url 'remove_from_cart' item.id username %}">Remove</a>
+                            <a class="btn" href="{% url 'remove_from_cart' item.id username %}">Remove</a>
                         </td>
                     </tr>
                 {% endfor %}
