@@ -1,0 +1,46 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MealMate</title>
+
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+    <nav class="navbar">
+
+        <a href="#" class="logo">MealMate</a>
+
+        <div class="nav-links">
+            <a href="{% url 'open_signup' %}">Signup</a>
+            <a href="{% url 'open_signin' %}">Signin</a>
+        </div>
+
+    </nav>
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <p class="small">Luxury Food Experience</p>
+
+            <h1>Discover Delicious Meals.</h1>
+
+            <p>
+                Experience premium restaurant quality food with
+                elegant ambiance and unforgettable flavors.
+            </p>
+
+            <a href="{% url 'open_signup' %}" class="btn">
+                Explore Menu
+            </a>
+
+        </div>
+
+    </section>
+
+    {% include 'footer.html' %}
+</body>
+</html>

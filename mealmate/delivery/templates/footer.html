@@ -1,0 +1,64 @@
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <p class="footer-title">MealMate</p>
+            <p class="footer-text">Delicious restaurant meals delivered right to your door with premium taste and speedy service.</p>
+            <p class="footer-note">Trusted by thousands for fast, reliable delivery and effortless restaurant discovery.</p>
+            <div class="footer-social">
+                <a href="https://www.linkedin.com/in/pratiksha-murchite">LinkedIn</a>
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+                <a href="#">Twitter</a>
+            </div>
+        </div>
+
+        <div class="footer-links">
+            <p class="footer-heading">Quick Links</p>
+            <a href="/">Home</a>
+            <a href="/open_show_restaurant">Restaurants</a>
+            <a href="/open_signup">Sign Up</a>
+            <a href="/open_login">Sign In</a>
+        </div>
+
+        <div class="footer-newsletter">
+            <p class="footer-heading">Stay Updated</p>
+            <p class="footer-text">Subscribe for offers, new restaurants, and fast delivery updates.</p>
+            <form action="#" method="post" class="newsletter-form">
+                <input type="email" name="email" placeholder="Enter your email" class="newsletter-input" required>
+                <button type="submit" class="newsletter-btn">Subscribe</button>
+            </form>
+        </div>
+
+        <div class="footer-contact">
+            <p class="footer-heading">Contact</p>
+            <p>Email: prajalmurchite@mealmate.com</p>
+            <p>Phone: +91 9028869155</p>
+            <p>Support 24/7 · Live chat available</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 MealMate. All rights reserved.</p>
+        <p class="footer-legal">Terms of Service · Privacy Policy · Cookies</p>
+    </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('.newsletter-form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const input = this.querySelector('.newsletter-input');
+            const btn = this.querySelector('.newsletter-btn');
+            input.style.display = 'none';
+            btn.style.display = 'none';
+            const message = document.createElement('p');
+            message.textContent = 'Thank you for subscribing!';
+            message.style.color = '#f4b860';
+            message.style.fontSize = '14px';
+            message.style.margin = '0';
+            this.appendChild(message);
+        });
+    }
+});
+</script>

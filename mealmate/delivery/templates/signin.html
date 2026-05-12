@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign In</title>
+
+    {% load static %}
+
+    <link href="{% static 'style.css' %}" rel="stylesheet">
+</head>
+<body>
+
+<div class="auth-container">
+
+    <div class="auth-card">
+
+        <h2 style="text-align:center; margin-bottom:25px;">
+            Sign In
+        </h2>
+
+        {% if message %}
+            <p class="error-text">{{ message }}</p>
+        {% endif %}
+
+        <form action="{% url 'signin' %}" method="post">
+
+            {% csrf_token %}
+
+            <label>Username</label>
+
+            <input type="text" name="username" value="{{ username }}" required>
+
+            <label>Password</label>
+
+            <input type="password" name="password" required>
+
+            <button type="submit">
+                Login
+            </button>
+
+        </form>
+
+        <div class="auth-footer">
+
+            Don't have an account?
+
+            <a href="{% url 'open_signup' %}">
+                Sign Up
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+    {% include 'footer.html' %}
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Home</title>
+
+    {% load static %}
+
+    <link href="{% static 'style.css' %}" rel="stylesheet">
+</head>
+<body>
+
+<div class="auth-container">
+
+    <div class="auth-card">
+
+        <h2 style="text-align:center; margin-bottom:25px;">
+            Welcome to Admin Home!
+        </h2>
+
+        <div class="admin-buttons">
+
+            <a href="{% url 'open_add_restaurant' %}" class="admin-btn">
+                Add New Restaurant
+            </a>
+
+            <a href="{% url 'open_show_restaurant' %}" class="admin-btn">
+                Show Restaurants
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+    {% include 'footer.html' %}
+</body>
+</html>

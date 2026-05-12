@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up</title>
+
+    {% load static %}
+
+    <link href="{% static 'style.css' %}" rel="stylesheet">
+</head>
+<body>
+
+<div class="auth-container">
+
+    <div class="auth-card">
+
+        <h2 style="text-align:center; margin-bottom:25px;">
+            Create Account
+        </h2>
+
+        <form action="{% url 'signup' %}" method="POST">
+
+            {% csrf_token %}
+
+            <label>Username</label>
+
+            <input type="text" name="username" required>
+
+            <label>Email</label>
+
+            <input type="email" name="email" required>
+
+            <label>Password</label>
+
+            <input type="password" name="password" required>
+
+            <button type="submit">
+                Register
+            </button>
+
+        </form>
+
+        <div class="auth-footer">
+
+            Already have an account?
+
+            <a href="{% url 'open_signin' %}">
+                Sign In
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+    {% include 'footer.html' %}
+</body>
+</html>

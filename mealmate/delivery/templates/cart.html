@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load static %}
+    <link href="{% static 'style.css' %}" rel="stylesheet">
+</head>
+<body>
+    <h3 style="text-align:center; margin-bottom:25px;">
+        Hi {{ username }}, here are your items
+    </h3>
+
+    {% if itemList %}
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Item Image</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%  for item in itemList %}
+                    <tr>
+                        <td>
+                            <img src="{{ item.picture }}" width="200" alt="{{ item.name }}">
+                        </td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.description }}</td>
+                        <td>{{ item.price }}</td>
+                        <td>
+                            <a class="btn btn-secondary" href="{% url 'remove_from_cart' item.id username %}">Remove</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2 style="text-align:center; margin-bottom:25px;">
+            Total price: {{ total_price }}
+        </h2>
+    {% else %}
+        <p style="text-align:center; margin:40px 0; font-size:18px; color:#fff;">Your cart is empty.</p>
+    {% endif %}
+
+    <form action="{% url 'checkout' username %}">
+        <input type="submit" value="CHECK OUT">
+    </form>
+    {% include 'footer.html' %}
+</body>
+</html>
