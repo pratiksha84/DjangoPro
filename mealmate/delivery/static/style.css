@@ -902,6 +902,13 @@ form{
     font-size:1rem;
 }
 
+.checkout-table .checkout-item-image{
+    width:60px;
+    height:60px;
+    object-fit:cover;
+    border-radius:12px;
+}
+
 .checkout-table tr:last-child td{
     border-bottom:none;
 }
@@ -941,14 +948,27 @@ form{
     padding:20px;
     margin-bottom:16px;
     display:flex;
-    justify-content:space-between;
     align-items:center;
+    gap:16px;
+}
+
+.checkout-item-image-mobile{
+    width:80px;
+    height:80px;
+    object-fit:cover;
+    border-radius:16px;
+    flex-shrink:0;
+}
+
+.checkout-item-details{
+    flex:1;
 }
 
 .checkout-item-name{
     font-size:1.1rem;
     font-weight:600;
     color:#edf2f7;
+    margin-bottom:4px;
 }
 
 .checkout-item-price{
@@ -981,6 +1001,12 @@ form{
     .checkout-item-card{
         padding:18px;
         margin-bottom:12px;
+        gap:12px;
+    }
+
+    .checkout-item-image-mobile{
+        width:70px;
+        height:70px;
     }
 
     .checkout-item-name{
@@ -993,11 +1019,13 @@ form{
 
     .checkout-total {
         text-align:left;
+        font-size:1.2rem;
     }
 
     .checkout-pay-button {
         width:100%;
         padding:16px 20px;
+        font-size:1.1rem;
     }
 }
 
