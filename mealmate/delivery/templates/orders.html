@@ -19,7 +19,7 @@
     {% if cart_items %}
         <a href="{% url 'customer_menu' cart_items.0.restaurant.id username %}">Back to Restaurants</a>
     {% else %}
-        <a href="/">Back to Home</a>
+        <a href="{% url 'home' %}">Back to Home</a>
     {% endif %}
     {% include 'footer.html' %}
 </body>

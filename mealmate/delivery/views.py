@@ -29,7 +29,7 @@ def signup(request):
             email=email,
             password=password,
         )
-        return HttpResponse('Signup successful')
+        return redirect('open_signin')
 
     return render(request, 'signup.html')
 
