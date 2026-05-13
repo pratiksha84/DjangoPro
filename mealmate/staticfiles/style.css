@@ -504,6 +504,81 @@ tr:hover{
     width:100%;
 }
 
+.menu-list{
+    display:grid;
+    gap:24px;
+    grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+    margin:24px auto;
+    padding:0 16px;
+    max-width:1200px;
+}
+
+.menu-card{
+    background:rgba(12, 18, 28, 0.95);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:28px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+}
+
+.menu-card-image{
+    display:block;
+    width:100%;
+    height:240px;
+    object-fit:cover;
+}
+
+.menu-card-body{
+    padding:24px;
+}
+
+.menu-card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:12px;
+    margin-bottom:14px;
+}
+
+.menu-card-body h2{
+    margin:0;
+    font-size:1.6rem;
+}
+
+.menu-card-price{
+    color:var(--primary);
+    font-weight:700;
+    font-size:1.1rem;
+}
+
+.menu-card-description{
+    color:#cfd4dc;
+    margin-bottom:14px;
+    line-height:1.7;
+}
+
+.menu-card-meta{
+    margin-bottom:18px;
+}
+
+.menu-card-body .btn{
+    margin-top:16px;
+    width:100%;
+}
+
+.cart-action{
+    display:flex;
+    justify-content:flex-end;
+    max-width:1200px;
+    margin:24px auto 0;
+    padding:0 16px;
+}
+
+.cart-action .cart-btn{
+    width:auto;
+    padding:14px 30px;
+}
+
 /* IMAGES */
 
 table img,
