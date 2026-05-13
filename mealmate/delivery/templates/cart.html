@@ -18,7 +18,6 @@
                 <tr>
                     <th>Item Image</th>
                     <th>Name</th>
-                    <th>Description</th>
                     <th>Price</th>
                     <th>Action</th>
                 </tr>
@@ -30,7 +29,6 @@
                             <img class="table-img" src="{{ item.picture }}" alt="{{ item.name }}">
                         </td>
                         <td>{{ item.name }}</td>
-                        <td>{{ item.description }}</td>
                         <td>{{ item.price }}</td>
                         <td>
                             <a class="btn" href="{% url 'remove_from_cart' item.id username %}">Remove</a>
