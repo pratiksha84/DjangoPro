@@ -12,32 +12,19 @@
         Welcome {{username}}!
     </h3>
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Restaurant name</th>
-                <th>Picture</th>
-                <th>Cuisine</th>
-                <th>Rating</th>
-                <th>Operations</th>
-            </tr>
-        </thead>
-        <tbody>
-            {%  for r in restaurantList %}
-                <tr>
-                    <td>{{ r.name }}</td>
-                    <td>
-                        <img src="{{ r.picture }}" alt="{{ r.name }}" width="200">
-                    </td>
-                    <td>{{ r.cuisine }}</td>
-                    <td>{{ r.rating }}</td>
-                    <td>
-                        <a class="btn" href="{% url 'view_menu' r.id username %}">View Menu</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="restaurant-list">
+        {% for r in restaurantList %}
+            <article class="restaurant-card">
+                <img class="restaurant-card-image" src="{{ r.picture }}" alt="{{ r.name }}">
+                <div class="restaurant-card-body">
+                    <h2>{{ r.name }}</h2>
+                    <p class="restaurant-card-cuisine">{{ r.cuisine }}</p>
+                    <p class="restaurant-card-rating">Rating: {{ r.rating }}</p>
+                    <a class="btn" href="{% url 'view_menu' r.id username %}">View Menu</a>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
     {% include 'footer.html' %}
 </body>
 </html>
