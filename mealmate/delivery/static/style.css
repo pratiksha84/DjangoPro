@@ -930,6 +930,33 @@ form{
     transform:translateY(-2px);
 }
 
+.checkout-items-mobile{
+    display:none;
+}
+
+.checkout-item-card{
+    background:#11161f;
+    border:1px solid #283039;
+    border-radius:20px;
+    padding:20px;
+    margin-bottom:16px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.checkout-item-name{
+    font-size:1.1rem;
+    font-weight:600;
+    color:#edf2f7;
+}
+
+.checkout-item-price{
+    font-size:1.1rem;
+    font-weight:700;
+    color:var(--primary);
+}
+
 @media (max-width: 640px) {
     .checkout-page {
         padding:0 14px 28px;
@@ -944,57 +971,24 @@ form{
     }
 
     .checkout-table-wrapper {
-        padding:12px;
-    }
-
-    .checkout-table {
-        min-width:auto;
-    }
-
-    .checkout-table thead {
         display:none;
     }
 
-    .checkout-table,
-    .checkout-table tbody,
-    .checkout-table tr,
-    .checkout-table td {
+    .checkout-items-mobile{
         display:block;
-        width:100%;
     }
 
-    .checkout-table tr {
-        margin-bottom:14px;
-        border:1px solid rgba(255,255,255,0.08);
-        border-radius:18px;
-        padding:14px 0;
-        background:#11161f;
+    .checkout-item-card{
+        padding:18px;
+        margin-bottom:12px;
     }
 
-    .checkout-table td {
-        padding:10px 14px 10px 120px;
-        border:none;
-        position:relative;
-        text-align:left;
-        white-space:normal;
+    .checkout-item-name{
+        font-size:1rem;
     }
 
-    .checkout-table td:before {
-        position:absolute;
-        top:10px;
-        left:16px;
-        width:90px;
-        font-weight:700;
-        color:#a6b0bc;
-        white-space:nowrap;
-    }
-
-    .checkout-table td:nth-of-type(1):before {
-        content:'Item';
-    }
-
-    .checkout-table td:nth-of-type(2):before {
-        content:'Price';
+    .checkout-item-price{
+        font-size:1rem;
     }
 
     .checkout-total {

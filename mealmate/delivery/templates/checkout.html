@@ -36,6 +36,15 @@
             </table>
         </div>
 
+        <div class="checkout-items-mobile">
+            {% for item in cart_items %}
+            <div class="checkout-item-card">
+                <div class="checkout-item-name">{{ item.name }}</div>
+                <div class="checkout-item-price">₹{{ item.price }}</div>
+            </div>
+            {% endfor %}
+        </div>
+
         <h3 class="checkout-total">Total: ₹{{ total_price }}</h3>
         <button class="checkout-pay-button" id="rzp-button">Pay with Razorpay</button>
         {% endif %}
