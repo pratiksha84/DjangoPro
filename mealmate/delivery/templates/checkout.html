@@ -10,27 +10,40 @@
 </head>
 <body>
     <div class="checkout-page">
-        <h1>Checkout</h1>
-        <h2>Welcome, {{ username }}</h2>
+        <div class="checkout-header">
+            <h1>Checkout</h1>
+            <h2>Welcome, {{ username }}</h2>
+        </div>
 
         {% if error %}
         <p class="error-text">{{ error }}</p>
         {% else %}
 
         <div class="checkout-items-list">
-            {% for item in cart_items %}
-            <div class="checkout-item-card">
-                <img src="{{ item.image.url }}" alt="{{ item.name }}" class="checkout-item-image">
-                <div class="checkout-item-details">
-                    <div class="checkout-item-name">{{ item.name }}</div>
-                    <div class="checkout-item-price">₹{{ item.price }}</div>
-                </div>
-            </div>
-            {% endfor %}
+            <table class="checkout-items-table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                    <tr>
+                        <td class="checkout-item-col">
+                            <div class="checkout-item-details">
+                                <div class="checkout-item-name">{{ item.name }}</div>
+                            </div>
+                        </td>
+                        <td class="checkout-item-price">₹{{ item.price }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
 
         <h3 class="checkout-total">Total: ₹{{ total_price }}</h3>
-        <button class="checkout-pay-button" id="rzp-button">Pay with Razorpay</button>
+        <button class="checkout-pay-button btn" id="rzp-button">Pay with Razorpay</button>
         {% endif %}
     </div>
 
