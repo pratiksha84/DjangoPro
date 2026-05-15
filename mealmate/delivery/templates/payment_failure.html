@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Failed</title>
+</head>
+<body>
+    <div style="text-align:center; padding: 40px;">
+        <h1>Payment Failed</h1>
+        <p>{{ message }}</p>
+        {% if razorpay_order_id %}
+            <p><strong>Order ID:</strong> {{ razorpay_order_id }}</p>
+        {% endif %}
+        {% if razorpay_payment_id %}
+            <p><strong>Payment ID:</strong> {{ razorpay_payment_id }}</p>
+        {% endif %}
+    </div>
+    {% include 'footer.html' %}
+</body>
+</html>

@@ -12,16 +12,17 @@
         Manage Restaurants
     </h2>
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Restaurant name</th>
-                <th>Picture</th>
-                <th>Cuisine</th>
-                <th>Rating</th>
-                <th>Operations</th>
-            </tr>
-        </thead>
+    <div class="table-wrapper">
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Restaurant name</th>
+                    <th>Picture</th>
+                    <th>Cuisine</th>
+                    <th>Rating</th>
+                    <th>Operations</th>
+                </tr>
+            </thead>
         <tbody>
             {% if restaurantList %}
                 {% for r in restaurantList %}
@@ -47,7 +48,8 @@
                 </tr>
             {% endif %}
         </tbody>
-    </table>
+        </table>
+    </div>
     
     {% include 'footer.html' %}
 </body>

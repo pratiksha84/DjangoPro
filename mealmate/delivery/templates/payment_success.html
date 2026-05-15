@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful</title>
+</head>
+<body>
+    <div style="text-align:center; padding: 40px;">
+        <h1>Payment Successful</h1>
+        <p>Thank you, {{ username }}. Your payment has been verified successfully.</p>
+        <p><strong>Order ID:</strong> {{ order_id }}</p>
+        <p><strong>Payment ID:</strong> {{ payment_id }}</p>
+        <p><strong>Status:</strong> {{ payment_status }}</p>
+        <p><strong>Amount:</strong> ₹{{ total_price }}</p>
+    </div>
+    {% include 'footer.html' %}
+</body>
+</html>

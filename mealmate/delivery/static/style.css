@@ -562,11 +562,16 @@ button{
 
 /* TABLE */
 
+.table-wrapper{
+    width:100%;
+    overflow-x:auto;
+}
+
 table{
     width:100%;
+    min-width:760px;
     border-collapse:collapse;
     margin-top:20px;
-    overflow-x:auto;
     border-radius:24px;
     background:#171c24;
     box-shadow:var(--shadow);
@@ -1085,11 +1090,15 @@ a{
         background: rgba(255,255,255,0.08);
     }
 
+    .table-wrapper{
+        overflow-x:auto;
+    }
+
     table{
         display:block;
         max-height:70vh;
         overflow-y:auto;
-        overflow-x:hidden;
+        overflow-x:auto;
         -webkit-overflow-scrolling:touch;
     }
 }

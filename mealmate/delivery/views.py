@@ -226,6 +226,63 @@ def checkout(request, username):
     })
 
 
+def payment_handler(request, username):
+    if request.method != 'POST':
+        return redirect('checkout', username=username)
+
+    razorpay_payment_id = request.POST.get('razorpay_payment_id')
+    razorpay_order_id = request.POST.get('razorpay_order_id')
+    razorpay_signature = request.POST.get('razorpay_signature')
+
+    if not (razorpay_payment_id and razorpay_order_id and razorpay_signature):
+        return render(request, 'payment_failure.html', {
+            'message': 'Missing Razorpay payment details. Please retry your payment.',
+        })
+
+    client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+    client.session.trust_env = False
+
+    params_dict = {
+        'razorpay_order_id': razorpay_order_id,
+        'razorpay_payment_id': razorpay_payment_id,
+        'razorpay_signature': razorpay_signature,
+    }
+
+    try:
+        client.utility.verify_payment_signature(params_dict)
+    except razorpay.errors.SignatureVerificationError:
+        return render(request, 'payment_failure.html', {
+            'message': 'Payment verification failed. Please try again with a fresh test payment.',
+            'razorpay_order_id': razorpay_order_id,
+            'razorpay_payment_id': razorpay_payment_id,
+        })
+    except Exception as e:
+        return render(request, 'payment_failure.html', {
+            'message': 'Unable to verify payment at this time. Please try again later.',
+            'error': str(e),
+        })
+
+    try:
+        payment = client.payment.fetch(razorpay_payment_id)
+        payment_status = payment.get('status', 'unknown')
+    except Exception:
+        payment_status = 'unknown'
+
+    customer = get_object_or_404(Customer, username=username)
+    cart = Cart.objects.filter(customer=customer).first()
+    paid_amount = cart.total_price() if cart else 0
+    if cart:
+        cart.items.clear()
+
+    return render(request, 'payment_success.html', {
+        'username': username,
+        'total_price': paid_amount,
+        'payment_id': razorpay_payment_id,
+        'order_id': razorpay_order_id,
+        'payment_status': payment_status,
+    })
+
+
 # Orders Page
 def orders(request, username):
     customer = get_object_or_404(Customer, username=username)

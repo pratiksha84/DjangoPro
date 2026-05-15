@@ -47,22 +47,28 @@
         {% endif %}
     </div>
 
-
-    
+    {% if order_id %}
+    <form id="payment-form" method="post" action="{% url 'payment_handler' username=username %}" style="display:none;">
+        {% csrf_token %}
+        <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id" />
+        <input type="hidden" name="razorpay_order_id" id="razorpay_order_id" />
+        <input type="hidden" name="razorpay_signature" id="razorpay_signature" />
+    </form>
 
     <script>
     var options = {
-        "key": "{{ razorpay_key_id }}", // Enter the Key ID generated from the Dashboard
-        "amount": "{{ amount_paise }}", // Amount is in currency subunits.
+        "key": "{{ razorpay_key_id }}",
+        "amount": "{{ amount_paise }}",
         "currency": "INR",
         "name": "MealMate",
         "description": "Order Transaction",
         "image": "https://example.com/your_logo",
-        "order_id": "{{ order_id }}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-        "handler": function (response){
-            alert(response.razorpay_payment_id);
-            alert(response.razorpay_order_id);
-            alert(response.razorpay_signature)
+        "order_id": "{{ order_id }}",
+        "handler": function (response) {
+            document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+            document.getElementById('razorpay_order_id').value = response.razorpay_order_id;
+            document.getElementById('razorpay_signature').value = response.razorpay_signature;
+            document.getElementById('payment-form').submit();
         },
         "prefill": {
             "name": "{{ username }}",
@@ -77,21 +83,22 @@
         }
     };
     var rzp1 = new Razorpay(options);
-    rzp1.on('payment.failed', function (response){
-            alert(response.error.code);
-            alert(response.error.description);
-            alert(response.error.source);
-            alert(response.error.step);
-            alert(response.error.reason);
-            alert(response.error.metadata.order_id);
-            alert(response.error.metadata.payment_id);
+    rzp1.on('payment.failed', function (response) {
+        alert(response.error.code);
+        alert(response.error.description);
+        alert(response.error.source);
+        alert(response.error.step);
+        alert(response.error.reason);
+        alert(response.error.metadata.order_id);
+        alert(response.error.metadata.payment_id);
     });
-    document.getElementById('rzp-button').onclick = function(e){
+    document.getElementById('rzp-button').onclick = function(e) {
         rzp1.open();
         e.preventDefault();
     }
     </script>
-    
+    {% endif %}
+
     {% include 'footer.html' %}
 </body>
 </html>
