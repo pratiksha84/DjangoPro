@@ -178,6 +178,11 @@ def customer_restaurants(request, username):
     return render(request, 'customer_home.html', {"restaurantList": restaurantList, "username": username})
 
 
+def public_restaurants(request):
+    """Public restaurant listing for anonymous users (no username required)."""
+    restaurantList = Restaurant.objects.all()
+    return render(request, 'customer_home.html', {"restaurantList": restaurantList, "username": ''})
+
 def add_to_cart(request, restaurant_id, item_id, username):
     item = Item.objects.get(id = item_id)
     customer = get_customer_safe(username)

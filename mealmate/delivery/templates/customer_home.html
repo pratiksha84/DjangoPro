@@ -28,7 +28,11 @@
                     <h2>{{ r.name }}</h2>
                     <p class="restaurant-card-cuisine">{{ r.cuisine }}</p>
                     <p class="restaurant-card-rating">Rating: {{ r.rating }}</p>
-                    <a class="btn" href="{% url 'view_menu' r.id username %}">View Menu</a>
+                    {% if username %}
+                        <a class="btn" href="{% url 'view_menu' r.id username %}">View Menu</a>
+                    {% else %}
+                        <a class="btn" href="{% url 'open_signin' %}">View Menu</a>
+                    {% endif %}
                 </div>
             </article>
         {% endfor %}
