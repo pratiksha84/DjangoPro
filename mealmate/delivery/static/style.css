@@ -117,6 +117,58 @@ p{
     color:#f8e6b0;
 }
 
+/* Orders page specific styles */
+.orders-page{
+    padding:40px 0 60px;
+    display:flex;
+    justify-content:center;
+}
+.orders-container{
+    width:100%;
+    max-width:1100px;
+    background: #101318;
+    border-radius:16px;
+    padding:36px 42px;
+    box-shadow: var(--shadow);
+    border:1px solid rgba(255,255,255,0.03);
+}
+.orders-title{
+    font-size:36px;
+    margin-bottom:12px;
+    color:var(--light);
+    line-height:1.1;
+}
+.orders-details h2{
+    font-size:22px;
+    margin-top:18px;
+    margin-bottom:8px;
+    color:var(--text);
+}
+.orders-details p{
+    color:var(--muted);
+    font-size:15px;
+}
+.orders-actions{
+    margin-top:18px;
+}
+.orders-actions .btn{
+    padding:10px 20px;
+    border-radius:8px;
+    font-size:15px;
+}
+
+/* Checkout address block */
+.checkout-address{
+    margin:18px 0 26px;
+    padding:18px;
+    background:rgba(255,255,255,0.02);
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.02);
+}
+.checkout-address h3{margin:0 0 8px;color:var(--text);font-size:18px}
+.checkout-address p{color:var(--muted);margin-bottom:10px}
+.checkout-address .btn{padding:8px 14px;border-radius:8px}
+
 .hero-content p{
     font-size:18px;
     margin-bottom:35px;

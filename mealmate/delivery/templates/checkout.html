@@ -15,6 +15,17 @@
             <h2>Welcome, {{ username }}</h2>
         </div>
 
+        <div class="checkout-address">
+            <h3>Delivery Address</h3>
+            {% if customer and customer.address %}
+                <p>{{ customer.address }}</p>
+                <a class="btn" href="{% url 'add_address' username %}">Edit Address</a>
+            {% else %}
+                <p class="error-text">No delivery address found.</p>
+                <a class="btn" href="{% url 'add_address' username %}">Add Address</a>
+            {% endif %}
+        </div>
+
         {% if error %}
         <p class="error-text">{{ error }}</p>
         {% else %}
@@ -82,19 +93,46 @@
             "color": "#3399cc"
         }
     };
-    var rzp1 = new Razorpay(options);
-    rzp1.on('payment.failed', function (response) {
-        alert(response.error.code);
-        alert(response.error.description);
-        alert(response.error.source);
-        alert(response.error.step);
-        alert(response.error.reason);
-        alert(response.error.metadata.order_id);
-        alert(response.error.metadata.payment_id);
+    // Ensure amount is numeric (paise) for the checkout and log options for debugging
+    try {
+        options.amount = parseInt(options.amount, 10);
+    } catch (e) {
+        // leave as-is
+    }
+    console.log('Razorpay options:', options);
+    // Basic validation to avoid opening an empty/invalid checkout window
+    var missing = [];
+    if (!options.key) missing.push('Razorpay key');
+    if (!options.order_id) missing.push('Order ID');
+    var numericAmount = Number(options.amount);
+    if (!options.amount || isNaN(numericAmount)) missing.push('Amount (in paise)');
+    if (missing.length) {
+        console.error('Razorpay checkout not initialized — missing:', missing.join(', '), options);
+        alert('Payment cannot be initiated: missing ' + missing.join(', ') + '. Please contact support.');
+    } else {
+        var rzp1 = new Razorpay(options);
+        rzp1.on('payment.failed', function (response) {
+        console.error('Razorpay payment failed:', response);
+        var err = (response && response.error) ? response.error : null;
+        var message = 'Payment could not be completed. Please use another method.';
+        if (err) {
+            message = err.description || err.reason || err.code || message;
+            if (err.metadata) {
+                if (err.metadata.order_id) message += '\nOrder ID: ' + err.metadata.order_id;
+                if (err.metadata.payment_id) message += '\nPayment ID: ' + err.metadata.payment_id;
+            }
+        }
+        alert(message);
     });
-    document.getElementById('rzp-button').onclick = function(e) {
-        rzp1.open();
-        e.preventDefault();
+        document.getElementById('rzp-button').onclick = function(e) {
+            try {
+                rzp1.open();
+            } catch (ex) {
+                console.error('Error opening Razorpay checkout:', ex);
+                alert('Unable to open payment window. Please try again or use another payment method.');
+            }
+            e.preventDefault();
+        }
     }
     </script>
     {% endif %}

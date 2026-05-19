@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Address</title>
+    {% load static %}
+    <link href="{% static 'style.css' %}" rel="stylesheet">
+    <style>
+        .address-card{max-width:720px;margin:40px auto;padding:28px;background:rgba(0,0,0,0.6);border-radius:12px}
+        label{color:var(--text);}
+        textarea{min-height:120px}
+    </style>
+</head>
+<body>
+    <div class="address-card">
+        <h1>Delivery Address</h1>
+        {% if message %}<p class="error-text">{{ message }}</p>{% endif %}
+        <form method="post" action="">
+            {% csrf_token %}
+            <label for="address">Address</label>
+            <textarea id="address" name="address" placeholder="Enter full delivery address">{{ customer.address|default_if_none:"" }}</textarea>
+            <div style="margin-top:18px">
+                <button class="btn" type="submit">Save & Continue</button>
+                <a class="btn" href="{% url 'checkout' username %}" style="margin-left:12px;">Cancel</a>
+            </div>
+        </form>
+    </div>
+    {% include 'footer.html' %}
+</body>
+</html>

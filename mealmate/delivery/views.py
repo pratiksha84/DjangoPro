@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+import logging
 from django.http import HttpResponse
 from django.conf import settings
 import razorpay
@@ -8,6 +9,15 @@ from .models import Customer, Restaurant, Item, Cart
 def say_hello(request):
     # return HttpResponse('Hello World')
     return render(request, 'index.html')
+
+
+def get_customer_safe(username):
+    """Return a Customer instance by username or None. Logs if duplicates found."""
+    qs = Customer.objects.filter(username=username)
+    customer = qs.first()
+    if qs.count() > 1:
+        logging.getLogger(__name__).warning('Multiple Customer entries found for username=%s; using first()', username)
+    return customer
 
 def open_signup(request):
     return render(request, 'signup.html')
@@ -41,8 +51,14 @@ def signin(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        try:
-            customer = Customer.objects.get(username=username)
+        qs = Customer.objects.filter(username=username)
+        customer = qs.first()
+        if qs.count() > 1:
+            logging.getLogger(__name__).warning('Multiple Customer entries found for username=%s; using first()', username)
+
+        if not customer:
+            message = 'Username invalid'
+        else:
             if customer.password != password:
                 message = 'Password invalid'
             else:
@@ -50,8 +66,6 @@ def signin(request):
                     return render(request, 'admin_home.html')
                 restaurantList = Restaurant.objects.all()
                 return render(request, 'customer_home.html', {"restaurantList": restaurantList, "username": username})
-        except Customer.DoesNotExist:
-            message = 'Username invalid'
 
     return render(request, 'signin.html', {'message': message, 'username': username})
 
@@ -155,9 +169,20 @@ def view_menu(request, restaurant_id, username):
     # itemList = Item.objects.all()
     return render(request, 'customer_menu.html', {"itemList" : itemList, "restaurant" : restaurant, "username":username})
 
+
+def customer_restaurants(request, username):
+    customer = get_customer_safe(username)
+    if not customer:
+        return redirect('open_signin')
+    restaurantList = Restaurant.objects.all()
+    return render(request, 'customer_home.html', {"restaurantList": restaurantList, "username": username})
+
+
 def add_to_cart(request, restaurant_id, item_id, username):
     item = Item.objects.get(id = item_id)
-    customer = Customer.objects.get(username = username)
+    customer = get_customer_safe(username)
+    if not customer:
+        return redirect('open_signin')
 
     cart, created = Cart.objects.get_or_create(customer = customer)
     cart.items.add(item)
@@ -166,7 +191,9 @@ def add_to_cart(request, restaurant_id, item_id, username):
 
 
 def remove_from_cart(request, item_id, username):
-    customer = get_object_or_404(Customer, username=username)
+    customer = get_customer_safe(username)
+    if not customer:
+        return redirect('open_signin')
     cart = Cart.objects.filter(customer=customer).first()
     if cart:
         item = get_object_or_404(Item, id=item_id)
@@ -175,7 +202,9 @@ def remove_from_cart(request, item_id, username):
 
 
 def show_cart(request, username):
-    customer = Customer.objects.get(username = username)
+    customer = get_customer_safe(username)
+    if not customer:
+        return redirect('open_signin')
     cart = Cart.objects.filter(customer=customer).first()
     items = cart.items.all() if cart else []
     total_price = cart.total_price() if cart else 0
@@ -184,7 +213,11 @@ def show_cart(request, username):
 
 def checkout(request, username):
     # Fetch customer and their cart
-    customer = get_object_or_404(Customer, username=username)
+    customer = get_customer_safe(username)
+    if not customer:
+        return render(request, 'checkout.html', {
+            'error': 'Customer not found. Please sign in.',
+        })
     cart = Cart.objects.filter(customer=customer).first()
     cart_items = cart.items.all() if cart else []
     total_price = cart.total_price() if cart else 0
@@ -218,11 +251,30 @@ def checkout(request, username):
     # Pass the order details to the frontend
     return render(request, 'checkout.html', {
         'username': username,
+        'customer': customer,
         'cart_items': cart_items,
         'total_price': total_price,
         'razorpay_key_id': settings.RAZORPAY_KEY_ID,
         'order_id': order['id'],
         'amount_paise': order_date['amount'],
+    })
+
+
+def add_address(request, username):
+    customer = get_customer_safe(username)
+    if not customer:
+        return redirect('open_signin')
+    message = ''
+    if request.method == 'POST':
+        addr = request.POST.get('address', '').strip()
+        customer.address = addr
+        customer.save()
+        return redirect('checkout', username=username)
+
+    return render(request, 'address_form.html', {
+        'username': username,
+        'customer': customer,
+        'message': message,
     })
 
 
@@ -268,24 +320,17 @@ def payment_handler(request, username):
     except Exception:
         payment_status = 'unknown'
 
-    customer = get_object_or_404(Customer, username=username)
-    cart = Cart.objects.filter(customer=customer).first()
-    paid_amount = cart.total_price() if cart else 0
-    if cart:
-        cart.items.clear()
-
-    return render(request, 'payment_success.html', {
-        'username': username,
-        'total_price': paid_amount,
-        'payment_id': razorpay_payment_id,
-        'order_id': razorpay_order_id,
-        'payment_status': payment_status,
-    })
+    # After successful verification, redirect to the orders page.
+    # Let the `orders` view fetch and clear the cart so the final order page
+    # ("Thank you for your order, {{ username }}!") is shown as the last screen.
+    return redirect('orders', username=username)
 
 
 # Orders Page
 def orders(request, username):
-    customer = get_object_or_404(Customer, username=username)
+    customer = get_customer_safe(username)
+    if not customer:
+        return redirect('open_signin')
     cart = Cart.objects.filter(customer=customer).first()
 
     # Fetch cart items and total price before clearing the cart
